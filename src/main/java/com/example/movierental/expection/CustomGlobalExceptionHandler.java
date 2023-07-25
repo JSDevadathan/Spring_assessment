@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler {
-    private Object DefaultMessageSourceResolvable;
 
     @ExceptionHandler(MovieNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
