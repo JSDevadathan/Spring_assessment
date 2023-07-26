@@ -6,6 +6,8 @@ import com.example.movierental.model.Movie;
 import com.example.movierental.service.MovieService;
 import jakarta.validation.Valid;
 import java.util.List;
+
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,15 @@ public class MovieController {
     public ResponseEntity<MovieResponseDto> getMovieById(@PathVariable int id)
             throws MovieNotFoundException {
         return new ResponseEntity<>(movieService.getMovieById(id), HttpStatus.OK);
+    }
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<MovieResponseDto>> getMoviesByStatus(@PathVariable("status") String status) {
+        String formattedStatus = convertToTitleCase(status);
+        List<MovieResponseDto> moviesByStatus = movieService.getMoviesByStatus(formattedStatus);
+        return new ResponseEntity<>(moviesByStatus, HttpStatus.OK);
+    }
+    private String convertToTitleCase(String status) {
+        return WordUtils.capitalizeFully(status);
     }
 
     @PostMapping

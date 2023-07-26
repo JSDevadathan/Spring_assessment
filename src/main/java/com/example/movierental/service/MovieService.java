@@ -6,6 +6,8 @@ import com.example.movierental.model.Movie;
 import com.example.movierental.repository.MovieRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,12 @@ public class MovieService {
                                     return new MovieNotFoundException(id);
                                 });
         return modelMapper.map(movie, MovieResponseDto.class);
+    }
+    public List<MovieResponseDto> getMoviesByStatus(String status) {
+        List<Movie> movies = movieRepository.findByStatus(status);
+        return movies.stream()
+                .map(movie -> modelMapper.map(movie, MovieResponseDto.class))
+                .collect(Collectors.toList());
     }
 
     public MovieResponseDto addMovie(Movie movie) {
