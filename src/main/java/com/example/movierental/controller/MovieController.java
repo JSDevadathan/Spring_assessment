@@ -33,6 +33,11 @@ public class MovieController {
             throws MovieNotFoundException {
         return new ResponseEntity<>(movieService.getMovieById(id), HttpStatus.OK);
     }
+    @GetMapping("/year/{year}")
+    public ResponseEntity<List<MovieResponseDto>> getMoviesByYear(@PathVariable int year) {
+        List<MovieResponseDto> moviesByYear = movieService.getMoviesByYear(year);
+        return new ResponseEntity<>(moviesByYear, HttpStatus.OK);
+    }
     @GetMapping("/status/{status}")
     public ResponseEntity<List<MovieResponseDto>> getMoviesByStatus(@PathVariable("status") String status) {
         String formattedStatus = convertToTitleCase(status);

@@ -4,6 +4,8 @@ import com.example.movierental.contract.MovieResponseDto;
 import com.example.movierental.expection.MovieNotFoundException;
 import com.example.movierental.model.Movie;
 import com.example.movierental.repository.MovieRepository;
+
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +46,13 @@ public class MovieService {
                                     return new MovieNotFoundException(id);
                                 });
         return modelMapper.map(movie, MovieResponseDto.class);
+    }
+    public List<MovieResponseDto> getMoviesByYear(int year) {
+        Year releaseYear = Year.of(year);
+        List<Movie> movies = movieRepository.findByReleaseYear(releaseYear);
+        return movies.stream()
+                .map(movie -> modelMapper.map(movie, MovieResponseDto.class))
+                .collect(Collectors.toList());
     }
     public List<MovieResponseDto> getMoviesByStatus(String status) {
         List<Movie> movies = movieRepository.findByStatus(status);
