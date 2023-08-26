@@ -27,6 +27,12 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<Object> handleMovieNotFound(MovieNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(MovieAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ResponseEntity<Object> RentalNotFound(MovieAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(RentalNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

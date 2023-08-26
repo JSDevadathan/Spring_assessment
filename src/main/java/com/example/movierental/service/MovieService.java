@@ -1,6 +1,7 @@
 package com.example.movierental.service;
 
 import com.example.movierental.contract.MovieResponseDto;
+import com.example.movierental.expection.MovieAlreadyExistsException;
 import com.example.movierental.expection.MovieNotFoundException;
 import com.example.movierental.model.Movie;
 import com.example.movierental.repository.MovieRepository;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +63,12 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
-    public MovieResponseDto addMovie(Movie movie) {
-        Movie savedMovie = movieRepository.save(movie);
+    public MovieResponseDto addMovie(MovieResponseDto movie) {
+        boolean movieExists = movieRepository.existsMovieByTitle(movie.getTitle());
+        if (movieExists) {
+            throw new MovieAlreadyExistsException(movie.getTitle());
+        }
+        Movie savedMovie = movieRepository.save(modelMapper.map(movie, Movie.class));
         return modelMapper.map(savedMovie, MovieResponseDto.class);
     }
 

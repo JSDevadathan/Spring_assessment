@@ -6,6 +6,8 @@ import com.example.movierental.validation.movies.ValidTitle;
 import com.example.movierental.validation.movies.ValidYear;
 import lombok.*;
 
+import java.time.Year;
+
 @Builder
 @Getter
 @Setter
@@ -15,7 +17,7 @@ public class MovieResponseDto {
     private Long id;
     @ValidTitle private String title;
     @ValidGenre private String genre;
-    @ValidYear private int releaseYear;
+    @ValidYear private Year releaseYear;
     @ValidStatus private String status;
 
     public enum MovieStatus {
